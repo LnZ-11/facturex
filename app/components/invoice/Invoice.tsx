@@ -18,7 +18,7 @@ export default function Invoice({cart, total}: InvoicePageProps) {
         <InvoiceTable cart={cart} total={total}/>
     </main>
     <footer className="mt-16 w-full">
-        <InvoiceFooter />
+        <InvoiceFooter total={total}/>
     </footer>
     <button className="print:hidden text-black border w-24 h-10" onClick={() => window.print()}>Imprimer</button>
     </div>

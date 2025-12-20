@@ -3,6 +3,8 @@
 
 import { FormValues } from "../../form/schema";
 
+
+
 type InvoiceTableProps = {
   cart: FormValues["cart"];
   total: number;
@@ -29,9 +31,7 @@ export default function InvoiceTable({ cart, total }: InvoiceTableProps) {
             <td className="p-2 border">{item.name}</td>
             <td className="p-2 border text-right">{item.quantity}</td>
             <td className="p-2 border text-right">{item.price} DA</td>
-            <td className="p-2 border text-right">
-              {item.quantity * item.price} DA
-            </td>
+            <td className="p-2 border text-right">{item.quantity * item.price} DA</td>
           </tr>
         ))}
 
@@ -40,9 +40,7 @@ export default function InvoiceTable({ cart, total }: InvoiceTableProps) {
           <td className="p-2 border text-center text-black" colSpan={4}>
             TOTAL
           </td>
-          <td className="p-2 border text-right">
-            {total} DA
-          </td>
+          <td className="p-2 border text-right">{total} DA</td>
         </tr>
       </tbody>
     </table>

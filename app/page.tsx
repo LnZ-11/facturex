@@ -2,7 +2,7 @@ import Form from "./components/form/form";
 
 export default function Home() {
   return (
-    <main className="min-h-[calc(100vh-5rem)] mt-2 print:p-0 print:m-0">
+    <main className="min-h-[calc(100vh-5rem)] lg:mt-4 lg:p-0 p-4 print:p-0 print:m-0">
       <div className="max-w-7xl mx-auto space-y-8 print:max-w-none print:space-y-0">
         <header className="flex items-center justify-between pb-6 border-b border-gray-200 dark:border-gray-800 print:hidden">
             <div>
