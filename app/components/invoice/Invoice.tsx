@@ -9,9 +9,9 @@ type InvoicePageProps = {
   cart: FormValues["cart"];
   total: number;
 };
-export default function Facture({cart, total}: InvoicePageProps) {
+export default function Invoice({cart, total}: InvoicePageProps) {
     return (
-    <div className="bg-white w-[210mm] h-[297mm] p-[20mm] border shadow-none">
+    <div className="bg-white w-[210mm] h-[297mm] p-[20mm] print:!w-full print:!h-auto print:!p-12 print:!m-0 print:!border-none border shadow-none">
     <div className="flex flex-col w-full h-full">
     <InvoiceHeader />
     <main>

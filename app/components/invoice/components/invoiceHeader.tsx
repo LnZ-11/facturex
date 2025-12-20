@@ -9,7 +9,7 @@ export default function InvoiceHeader(){
             <div className="flex flex-row w-full justify-between">
                 <h1 className="ml-12 mb-5"><b>IDHOURAR INFO</b></h1>
                 <button className="print:hidden border rounded w-26" onClick={() => setAuto(!auto)}>{auto? "Date auto" : "Date Manuel"}</button>
-                <h1><u>Beni Douala le:</u> {auto ? new Date().toLocaleDateString("fr-FR") : <input type="text" placeholder="Date" className="w-26" ></input>}</h1>
+                <h1><u>Beni Douala le:</u> {auto ? new Date().toLocaleDateString("fr-FR") : <input type="text" placeholder="" className="w-26 border print:!border-none" ></input>}</h1>
             </div>
             <h2><b>Telephone:</b> 0666 60 41 97</h2>
             <h2><b>N° d'article:</b> 15 320 140 774</h2>
