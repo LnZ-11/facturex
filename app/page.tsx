@@ -6,7 +6,7 @@ export default function Home() {
       <div className="max-w-7xl mx-auto space-y-8 print:max-w-none print:space-y-0">
         <header className="flex items-center justify-between pb-6 border-b border-gray-200 dark:border-gray-800 print:hidden">
             <div>
-              <h1 className="text-3xl font-bold tracking-tight text-blue-900 dark:text-gray-50">
+              <h1 className="text-3xl font-bold tracking-tight text-blue-700 dark:text-blue-700">
                 Facturex
               </h1>
               <p className="mt-2 text-gray-500 dark:text-gray-400 text-lg">
