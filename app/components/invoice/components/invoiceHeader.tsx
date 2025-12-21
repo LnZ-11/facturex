@@ -35,7 +35,7 @@ export default function InvoiceHeader({invoiceNumber, invoiceDate, client}: invo
             <h2><b>N° du compte bancaire BEA:</b> 00200034034220135152</h2>
             </div>
             <div className="flex flex-row w-full justify-between text-xs">
-            <h2><b>Nom du client :</b> {client}</h2>
+            <h2 className="ml-8 mt-8 text-lg"><b>Nom du client :</b> {client}</h2>
             </div>
 
         </header>
