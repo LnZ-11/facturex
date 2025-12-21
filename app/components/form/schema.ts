@@ -4,11 +4,18 @@
 
 import { z } from "zod";
 import { date } from "zod/v4";
+import Invoice from "../invoice/Invoice";
 
 // Cart schema
 // - "cart" is an array of items
 // - Each item has name, price, and quantity
 export const cartSchema = z.object({
+  // Invoice-level metadata
+  client: z.string().min(1, "Client name required"),
+  invoiceNumber: z.string().min(1, "Invoice number required"),
+  invoiceDate: z.string().min(1, "Invoice date required"),
+
+  // Cart items array
   cart: z.array(
     z.object({
       // Name is required and must be at least 1 character
