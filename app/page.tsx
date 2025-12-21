@@ -16,7 +16,7 @@ export default function Home() {
             {/* Could add a theme toggle or user menu here later */}
         </header>
 
-        <section className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-gray-200 dark:border-slate-800 p-6 md:p-8 print:border-none print:shadow-none print:p-0 print:bg-transparent">
+        <section className="bg-white m-8 dark:bg-slate-900 rounded-2xl shadow-sm border border-gray-200 dark:border-slate-800 p-6 md:p-8 print:border-none print:shadow-none print:p-0 print:bg-transparent">
           <Form />
         </section>
       </div>

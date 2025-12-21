@@ -50,9 +50,13 @@ export default function Form() {
   const scale = useUpdateScale(containerRef);
 
   const targetRef = useRef<HTMLDivElement>(null);
-    const handleSave = () => {
-      generatePDF(() => targetRef.current, {filename: `${client} (${invoiceDate})`});
-    };
+  const handleSave = () => {
+    generatePDF(() => targetRef.current, {filename: `${client} (${invoiceDate})`});
+  };
+  const handlePrintSave = ()=>{
+    handleSave()
+    window.print()
+  }
 
   return (
     <div className="grid grid-cols-1 xl:grid-cols-12 gap-8 lg:gap-12 print:block">
@@ -145,7 +149,7 @@ export default function Form() {
             </div>
       <div className="w-full flex flex-row justify-around">
       <button type="submit" className=" print:hidden w-32 flex items-center justify-center gap-2 py-3 px-4 rounded-xl border-2 border-dashed border-gray-300 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:border-blue-500 hover:text-blue-600 hover:bg-blue-50/50 dark:hover:bg-blue-900/10 transition-all font-medium" onClick={handleSave}>Enregistrer</button>
-      <button className=" print:hidden w-32 flex items-center justify-center gap-2 py-3 px-4 rounded-xl border-2 border-dashed border-gray-300 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:border-blue-500 hover:text-blue-600 hover:bg-blue-50/50 dark:hover:bg-blue-900/10 transition-all font-medium" onClick={() => window.print()}>Imprimer</button>
+      <button className=" print:hidden w-32 flex items-center justify-center gap-2 py-3 px-4 rounded-xl border-2 border-dashed border-gray-300 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:border-blue-500 hover:text-blue-600 hover:bg-blue-50/50 dark:hover:bg-blue-900/10 transition-all font-medium" onClick={handlePrintSave}>Imprimer & Enregistrer</button>
       </div>
         </div>
       </div>

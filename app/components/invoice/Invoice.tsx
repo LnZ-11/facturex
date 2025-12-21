@@ -15,7 +15,10 @@ type InvoicePageProps = {
 
 export default function Invoice({cart, total, invoiceNumber, invoiceDate, client}: InvoicePageProps) {
     return (
-      <div className="bg-white w-[210mm] h-[297mm] p-[20mm] print:!w-full print:!h-auto print:!p-12 print:!m-0 print:!border-none border shadow-none">
+      <div 
+        className="bg-white w-[210mm] h-[297mm] p-[20mm] print:!w-full print:!h-auto print:!p-12 print:!m-0 print:!border-none border shadow-none"
+        style={{ fontFamily: '"Times New Roman", Times, serif' }}
+      >
         <div className="flex flex-col w-full h-full">
           <InvoiceHeader client={client} invoiceNumber={invoiceNumber} invoiceDate={invoiceDate}/>
           <main>
