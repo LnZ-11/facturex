@@ -13,8 +13,8 @@ import { UseFormRegister, FieldErrors } from "react-hook-form";
 import Invoice from "../invoice/Invoice";
 import { useWatch } from "react-hook-form";
 import { useUpdateScale } from "./hook/useUpdateScale";
-import { useRef } from "react";
-import generatePDF from 'react-to-pdf';
+import { useRef, useState, useEffect } from "react";
+import { format } from "path";
 // ... existing imports
 type CartItemProps = {
   register: UseFormRegister<FormValues>; // react-hook-form register function
@@ -44,18 +44,67 @@ export default function Form() {
     name: "client",
   });
   const totalPrice = total({control});
+  const [autoDate, setAutoDate] = useState(true);
+
+  const [displayDate, setDisplayDate] = useState(invoiceDate);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (autoDate) {
+      setDisplayDate(new Date().toLocaleDateString("fr-FR"));
+    } else {
+      setDisplayDate(invoiceDate);
+    }
+  }, [autoDate, invoiceDate]);
 
   // Scaling logic for A4 preview
   const containerRef = useRef<HTMLDivElement>(null);  
   const scale = useUpdateScale(containerRef);
 
   const targetRef = useRef<HTMLDivElement>(null);
-  const handleSave = () => {
-    generatePDF(() => targetRef.current, {filename: `${client} (${invoiceDate})`});
+
+  // Update handleSave to use displayDate
+  const handleSave = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch('/api/pdf', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          client,
+          invoiceNumber,
+          invoiceDate: displayDate, // Use the calculated display date
+          cart: cart ?? [],
+          total: totalPrice
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to generate PDF');
+      }
+
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${client || 'facture'}_${invoiceDate?.replace(/\//g, '-') || 'date'}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+      console.error('Error generating PDF:', error);
+      alert('Une erreur est survenue lors de la génération du PDF');
+    } finally {
+      setLoading(false);
+    }
   };
   const handlePrintSave = ()=>{
-    handleSave()
     window.print()
+    handleSave()
   }
 
   return (
@@ -99,8 +148,12 @@ export default function Form() {
                 />
               </div>
             </div>
+            
+            <div className="flex items-center gap-2 mb-4">
+               <input type="checkbox" id="autoDate" checked={autoDate} onChange={(e) => setAutoDate(e.target.checked)} className="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" />
+               <label htmlFor="autoDate" className="text-sm text-gray-700 dark:text-gray-300">Utiliser la date automatique (aujourd'hui)</label>
+            </div>
           </div>
-          
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">Articles</h2>
           <span className="px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400">
@@ -144,11 +197,23 @@ export default function Form() {
                     }}
                     className="shadow-2xl print:!shadow-none print:!transform-none print:!w-full print:!h-auto print:!mb-0 transition-transform duration-300 ease-out bg-white"
                 >
-                     <Invoice client={client} invoiceDate={invoiceDate} invoiceNumber={invoiceNumber} cart={ cart ?? []} total={totalPrice} />
+                     <Invoice client={client} invoiceDate={displayDate} invoiceNumber={invoiceNumber} cart={ cart ?? []} total={totalPrice} />
                 </div>
             </div>
       <div className="w-full flex flex-row justify-around">
-      <button type="submit" className=" print:hidden w-32 flex items-center justify-center gap-2 py-3 px-4 rounded-xl border-2 border-dashed border-gray-300 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:border-blue-500 hover:text-blue-600 hover:bg-blue-50/50 dark:hover:bg-blue-900/10 transition-all font-medium" onClick={handleSave}>Enregistrer</button>
+      <button 
+        type="submit" 
+        disabled={loading}
+        className="print:hidden w-32 flex items-center justify-center gap-2 py-3 px-4 rounded-xl border-2 border-dashed border-gray-300 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:border-blue-500 hover:text-blue-600 hover:bg-blue-50/50 dark:hover:bg-blue-900/10 transition-all font-medium disabled:opacity-50 disabled:cursor-not-allowed" 
+        onClick={handleSave}
+      >
+        {loading ? (
+             <svg className="animate-spin h-5 w-5 text-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+             </svg>
+        ) : "Enregistrer"}
+      </button>
       <button className=" print:hidden w-32 flex items-center justify-center gap-2 py-3 px-4 rounded-xl border-2 border-dashed border-gray-300 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:border-blue-500 hover:text-blue-600 hover:bg-blue-50/50 dark:hover:bg-blue-900/10 transition-all font-medium" onClick={handlePrintSave}>Imprimer & Enregistrer</button>
       </div>
         </div>

@@ -1,4 +1,4 @@
-'use client'
+
 
 import InvoiceHeader from "./components/invoiceHeader";
 import InvoiceTable from "./components/invoiceTable";

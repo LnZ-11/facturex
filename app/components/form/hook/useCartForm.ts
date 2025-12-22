@@ -1,3 +1,4 @@
+'use client'
 import { FormValues, cartSchema } from "../schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, useFieldArray } from "react-hook-form";
